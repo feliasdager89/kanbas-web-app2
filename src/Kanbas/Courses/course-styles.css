@@ -1,0 +1,10 @@
+.wd-course-status .btn + .btn {
+  margin-left: .5rem;
+
+} 
+
+#wd-course-status  {
+    margin-bottom: 1rem;    
+    margin-left: 9rem; 
+    margin-right: 9rem;
+}

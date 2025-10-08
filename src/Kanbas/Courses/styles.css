@@ -1,0 +1,44 @@
+/* Layout helpers */
+#wd-home {
+  /* prevents the sticky sidebar from bumping into the navbar if you have one */
+  --wd-sticky-offset: 1rem;
+}
+#wd-course-status.position-sticky {
+  top: var(--wd-sticky-offset);
+}
+
+/* Modules styling */
+#wd-modules .wd-module {
+  border: 1px solid var(--bs-border-color);
+  border-radius: .5rem;
+  overflow: hidden;
+  background: var(--bs-body-bg);
+}
+
+#wd-modules .wd-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bs-secondary-bg);
+  color: var(--bs-emphasis-color);
+  font-weight: 600;
+}
+
+#wd-modules .wd-lessons .wd-lesson {
+  border: 0;
+  border-top: 1px solid var(--bs-border-color);
+  padding-left: .75rem !important;  /* tighten left padding a little */
+}
+
+#wd-modules .wd-lesson:first-child {
+  background: var(--bs-light);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  border-left: .25rem solid var(--bs-secondary);
+}
+
+/* Buttons in Course Status */
+#wd-course-status .btn {
+  text-wrap: nowrap;
+}
