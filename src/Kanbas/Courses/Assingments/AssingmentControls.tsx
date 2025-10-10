@@ -1,8 +1,7 @@
 import React from 'react'
 import { FaMagnifyingGlass, FaPlus } from 'react-icons/fa6'
 
-export default function 
-() {
+export default function AssignmentControls() {
   return (
     <div id='wd-assingment-controls' style={{display: "flex", alignItems: "center",float: "right", marginBottom: "20px"}}>
          <FaMagnifyingGlass className='position-relative me-2' style={{bottom: "1px"}} />

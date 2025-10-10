@@ -8,6 +8,8 @@ import Labs from "../Labs";
 import Account from "./Account"; 
 import * as db from "./Database";
 import { useState } from "react";
+import { Provider } from "react-redux";
+import store from "./store";
 
 
 export default function Kanbas() { 
@@ -37,6 +39,7 @@ export default function Kanbas() {
 
 
   return (
+    <Provider store={store}>
     <div id="wd-kanbas" className="d-flex"> 
         <KanbasNavigation/>
            <div className="wd-main-content-offset p-3">
@@ -58,6 +61,7 @@ export default function Kanbas() {
               <Route path="Inbox" element={<h1>Inbox</h1>} />
             </Routes> 
            </div>
-    </div>
+    </div> 
+    </Provider>
 );}
 
