@@ -1,16 +1,20 @@
 import { BsGripVertical } from "react-icons/bs";
 import AssingmentControls from "./AssingmentControls";
-import GreenCheckmark from "../Modules/GreenCheckmark";
 import LessonControlButtons from "../Modules/LessonControlButtons"; 
 import "./assingment-styles.css"
-import { FaClipboard, FaClipboardList } from "react-icons/fa6";
-import { useParams } from "react-router";
-import * as db from "../../Database";
+import { FaClipboardList, FaTrash } from "react-icons/fa6";
+import { useParams, NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAssignment } from "./reducer";
 
-export default function Assignments() { 
- 
-  const {cid} = useParams();
-   const assignments = db.assignments;
+export default function Assignments(
+  //{ addAssignmentId }: { addAssignmentId: string } , 
+  //{ deleteAssignment }: { deleteAssignment: (assignmentId: string) => void; }
+) {
+
+  const { cid } = useParams();
+  const dispatch = useDispatch();
+  const { assignments }: any = useSelector((state: any) => state.assignmentsReducer);
 
   return (
     <div id="wd-assignments">
@@ -24,27 +28,37 @@ export default function Assignments() {
           <button>+</button>
       </h3>
 
-      <ul id="wd-assignment-list" className="list-group rounded-0"> 
-         {assignments
-        .filter((assignment)=>assignment.course === cid)
-        .map((assignment)=>(
+    <ul id="wd-assignment-list" className="list-group rounded-0"> 
+      {assignments
+      .filter((assignment: any) => !cid || String(assignment.course) === String(cid))
+      .map((assignment: any) => (
 
         <li 
             key={assignment._id}
             className="wd-assignment-list-item p-3 ps-2  border-gray fs-5">
            <FaClipboardList className="me-2 fs-3" />
            <BsGripVertical className="me-2 fs-3" />
-          <a className="wd-assignment-link" 
-            href="#/Kanbas/Courses/1234/Assignments/123">
+          <NavLink className="wd-assignment-link" 
+            to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}/Editor`}>
             {assignment && assignment.title}
-          </a> 
+          </NavLink> 
+          
           <div id="wd-assignment-status">
           <span style={{ color: "red" }}>Multiple Modules </span>| Not Available until {assignment.availableFrom} at 12:00 am |
-          <LessonControlButtons />
+          <LessonControlButtons /> 
+          <FaTrash
+            className='fs-4 me-2 mb-1'
+            role="button"
+            title="Delete assignment"
+            onClick={() => dispatch(deleteAssignment(assignment._id))}
+          />
           </div>
           <p id="wd-assignment-due-date">Due {assignment.dueDate} at 11:59pm | 100 </p>
         </li>
-        ))}  
+        ))}
+        {assignments.filter((a: any) => !cid || String(a.course) === String(cid)).length === 0 && (
+          <li className="list-group-item">No assignments to display.</li>
+        )}
       </ul>
     </div>
 );}

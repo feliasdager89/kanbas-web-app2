@@ -29,10 +29,8 @@ export default function Modules() {
       addModule={() => {
           dispatch(addModule({ name: moduleName, course: cid }));
           setModuleName("");
-        }}
-      
-      />
-      
+        }} 
+      />  
       <br />
       <br />
       <br />
