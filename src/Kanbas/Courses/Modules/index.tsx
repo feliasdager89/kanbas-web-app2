@@ -1,4 +1,4 @@
-import { Module } from "module";
+//import { Module } from "module";
 import ModuleControls from "./ModuleControls";
 import { BsGripVertical } from "react-icons/bs";
 import ModuleControlButtons from "./ModuleControlButtons";
