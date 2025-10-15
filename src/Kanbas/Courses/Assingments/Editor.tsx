@@ -1,14 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { addAssignment, editAssignment } from "./reducer";
+import { addAssignment, editAssignment } from "./reducer"; 
+import * as client from "./client";
 
 export default function AssignmentEditor() {
   const { aid, cid } = useParams();
   const { assignments }: any = useSelector((state: any) => state.assignmentsReducer);
   const assignment = assignments.find((a: any) => String(a._id) === String(aid));
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
+
+  const addOne = async (assignment: any) => {
+    const newAssignment = await client.createAssignment(cid as string, assignment);
+    dispatch(addAssignment(newAssignment));
+  } 
+
+  const saveOne = async (assignment: any) => {
+    const status = await client.updateAssignment(assignment);
+    dispatch(editAssignment(assignment));
+  } 
+
+  const editOne = async (assignment: any) => {
+    const status = await client.updateAssignment(assignment);
+    dispatch(editAssignment(assignment));
+  }
 
   const [title, setTitle] = useState(assignment?.title ?? "");
   const [description, setDescription] = useState(assignment?.description ?? "");
@@ -44,10 +60,12 @@ export default function AssignmentEditor() {
       course: assignment?.course ?? cid,
     };
 
-    if (assignment) {
-      dispatch(editAssignment(payload));
+    if (assignment) { 
+      editOne(payload);
+      //dispatch(editAssignment(payload));
     } else {
-      dispatch(addAssignment(payload));
+      addOne(payload);                                     
+      //dispatch(addAssignment(payload));
     }
 
     // navigate back to assignments list for the course

@@ -5,16 +5,35 @@ import "./assingment-styles.css"
 import { FaClipboardList, FaTrash } from "react-icons/fa6";
 import { useParams, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAssignment } from "./reducer";
+import { deleteAssignment, setAssignments } from "./reducer"; 
+import * as client from "./client";
+import { useEffect } from "react";
 
 export default function Assignments(
   //{ addAssignmentId }: { addAssignmentId: string } , 
   //{ deleteAssignment }: { deleteAssignment: (assignmentId: string) => void; }
-) {
+) { 
 
   const { cid } = useParams();
   const dispatch = useDispatch();
-  const { assignments }: any = useSelector((state: any) => state.assignmentsReducer);
+  const { assignments }: any = useSelector((state: any) => state.assignmentsReducer); 
+
+  const removeAssignment = async (assignmentId: string) => {
+      await client.deleteAssignment(assignmentId);
+      dispatch(deleteAssignment(assignmentId));
+    };  
+
+    const fetchAssignments = async () => {
+        const assignments = await client.findAssignmentsForCourse(cid as string);
+        dispatch(setAssignments(assignments));
+      };
+
+    useEffect(() => {
+    if (!cid) return;
+    client.findAssignmentsForCourse(cid).then((data) => {
+      dispatch(setAssignments(data));
+    });
+  }, [cid, dispatch]);
 
   return (
     <div id="wd-assignments">
@@ -50,7 +69,9 @@ export default function Assignments(
             className='fs-4 me-2 mb-1'
             role="button"
             title="Delete assignment"
-            onClick={() => dispatch(deleteAssignment(assignment._id))}
+            onClick={() => 
+              removeAssignment(assignment._id)}
+              //dispatch(deleteAssignment(assignment._id))}
           />
           </div>
           <p id="wd-assignment-due-date">Due {assignment.dueDate} at 11:59pm | 100 </p>
