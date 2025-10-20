@@ -1,12 +1,15 @@
-import React from 'react'
-import { Link } from 'react-router'
-
+import { Link, useLocation, useParams } from "react-router-dom";
 export default function AccountNavigation() {
+  const links = ["Signin", "Signup", "Profile"];
+  const { pathname } = useLocation();
   return (
-    <div id="wd-account-navigation" >
-        <Link id="wd-signin-link" to="/Kanbas/Account/Signin" > Sign In </Link> <br/>
-        <Link id="wd-signup-link" to="/Kanbas/Account/Signup" > Sign Up </Link> <br/>
-        <Link id="wd-profile-link" to="/Kanbas/Account/Profile" > Profile </Link> <br />
+    <div id="wd-account-navigation" className="list-group fs-5 rounded-0">
+      {links.map((link) => (
+        <Link to={`/Kanbas/Account/${link}`} className={`wd-link border border-0 list-group-item
+           ${ pathname.includes(link) ? "active text-black" : "text-danger" }`}> {link} </Link>
+      ))}
     </div>
-  )
+  );
 }
+
+

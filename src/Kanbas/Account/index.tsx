@@ -1,31 +1,27 @@
-import React from 'react';
-import Signin from './Signin';
-import { Navigate, Route, Routes } from 'react-router';
-import Signup from './Signup';
-import Profile from './Profile';
-import AccountNavigation from './Navigation';
-
+import { Routes, Route, Navigate } from "react-router-dom";
+import Signin from "./Signin";
+import AccountNavigation from "./Navigation";
+import { useSelector } from "react-redux";
+import Profile from "./Profile";
+import Signup from "./Signup";
 export default function Account() {
   return (
-    <div>
-      <h2>Account</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td valign="top">
-              <AccountNavigation />
-            </td>
-            <td valign="top">
-              <Routes>
-                <Route path="/" element={<Navigate to="/Kanbas/Account/Signin" />} />
-                <Route path="/Signin" element={<Signin />} />
-                <Route path="/Signup" element={<Signup />} />
-                <Route path="/Profile" element={<Profile />} />
-              </Routes>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div className="wd-account-screen">
+      <div className="d-flex">
+        <div className="d-none d-md-block">
+          <AccountNavigation />
+        </div>
+        <div className="flex-fill p-4 pt-0">
+          <Routes>
+            <Route path="/" element={ <Navigate to="/Kanbas/Account/Signin" /> } />
+            <Route path="/Signin" element={<Signin />} />
+            <Route path="/Signup" element={<Signup />} />
+            <Route path="/Profile" element={<Profile />} />
+          </Routes>
+        </div>
+      </div>
     </div>
   );
 }
+
+
