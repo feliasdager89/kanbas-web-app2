@@ -8,9 +8,11 @@ import Labs from "../Labs";
 import Account from "./Account"; 
 import * as db from "./Database";
 import { useEffect, useState } from "react";
-import { Provider } from "react-redux";
-import store from "./store"; 
-import * as client from "./Courses/client";
+//import { Provider } from "react-redux";
+//import store from "./store"; 
+import * as client from "./Courses/client"; 
+import Session from "./Account/Session";
+import ProtectedRoute from "./ProtectedRoute";
 
 
 
@@ -52,14 +54,15 @@ export default function Kanbas() {
 
 
   return (
-    <Provider store={store}>
+      <Session>
     <div id="wd-kanbas" className="d-flex"> 
         <KanbasNavigation/>
            <div className="wd-main-content-offset p-3">
             <Routes>
               <Route path="/" element={<Navigate to="Dashboard" />} />
-              <Route path="Account/*" element={<Account/>} />
-              <Route path="Dashboard" element={
+              <Route path="/Account/*" element={<Account/>} />
+              <Route path="Dashboard" element={ 
+                <ProtectedRoute>
                 <Dashboard
               courses={courses}
               course={course}
@@ -67,6 +70,7 @@ export default function Kanbas() {
               addNewCourse={addNewCourse}
               deleteCourse={deleteCourse}
               updateCourse={updateCourse}/>
+                </ProtectedRoute> 
               } />
               <Route path="Courses/:cid/*" element={<Courses  courses={courses}/>} />
               <Route path="Calendar" element={<h1>Calendar</h1>} /> 
@@ -75,6 +79,7 @@ export default function Kanbas() {
             </Routes> 
            </div>
     </div> 
-    </Provider>
+    </Session>
+  
 );}
 
