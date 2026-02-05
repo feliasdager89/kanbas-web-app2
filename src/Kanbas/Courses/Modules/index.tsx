@@ -11,6 +11,7 @@ import * as client from "./client";
 import { addModule, editModule, updateModule, deleteModule,setModules}
   from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
+import type { Module } from "./reducer";
 
 
 
@@ -26,7 +27,7 @@ export default function Modules() {
   //const modules = db.modules;
   //const [modules, setModules] = useState<any[]>(db.modules);
   const [moduleName, setModuleName] = useState(""); 
-  const { modules } = useSelector((state: any) => state.modulesReducer);
+  const { modules } = useSelector((state: any) => state.modulesReducer) as { modules: Module[] };
   const dispatch = useDispatch(); 
 
   const createModule = async (module: any) => {
@@ -40,12 +41,13 @@ export default function Modules() {
   };
 
    const fetchModules = async () => {
+    if (!cid) return;
     const modules = await client.findModulesForCourse(cid as string);
     dispatch(setModules(modules));
   };
   useEffect(() => {
     fetchModules();
-  }, []);
+  }, [cid]);
 
 
   return (
