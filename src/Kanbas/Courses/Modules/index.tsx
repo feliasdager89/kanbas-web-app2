@@ -63,9 +63,10 @@ export default function Modules() {
       <br />
       <br />
       <ul id= "wd-modules" className="mt-2 list-group rounded-0 w-100">
-        {modules
-        .filter((module:any)=>module.course === cid)
-        .map((module:any)=>(
+        {Array.isArray(modules) &&
+          modules
+          .filter((module:any)=>module.course === cid)
+          .map((module:any)=>(
 
           <li 
               key={module._id}
