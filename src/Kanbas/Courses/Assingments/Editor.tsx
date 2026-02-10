@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { addAssignment, editAssignment } from "./reducer"; 
+import { addAssignment, updateAssignment } from "./reducer"; 
 import * as client from "./client";
 
 export default function AssignmentEditor() {
@@ -17,13 +17,13 @@ export default function AssignmentEditor() {
   } 
 
   const saveOne = async (assignment: any) => {
-    const status = await client.updateAssignment(assignment);
-    dispatch(editAssignment(assignment));
-  } 
+  const updated = await client.updateAssignment(assignment);
+  dispatch(updateAssignment(updated)); 
+  };
 
   const editOne = async (assignment: any) => {
     const status = await client.updateAssignment(assignment);
-    dispatch(editAssignment(assignment));
+    dispatch(updateAssignment(assignment));
   }
 
   const [title, setTitle] = useState(assignment?.title ?? "");
@@ -47,25 +47,27 @@ export default function AssignmentEditor() {
     if (!title || title.trim() === "") {
       alert("Please enter a title for the assignment.");
       return;
-    }
+    } 
 
-    const payload: any = {
-      _id: assignment?._id ?? Date.now().toString(),
-      title: title.trim(),
+    const payload = {
+      _id: assignment?._id ?? undefined, 
+      title,
       description,
       points,
-      dueDate,
+      dueDate,  
       availableFrom,
       availableUntil,
-      course: assignment?.course ?? cid,
+      course: assignment?.course ?? cid ?? "",
     };
 
-    if (assignment) { 
-      editOne(payload);
-      //dispatch(editAssignment(payload));
+  
+
+    if (assignment) {
+      // Editing existing assignment
+      saveOne({...payload, _id: assignment._id});
     } else {
-      addOne(payload);                                     
-      //dispatch(addAssignment(payload));
+      // Creating new assignment
+      addOne(payload);
     }
 
     // navigate back to assignments list for the course
